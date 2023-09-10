@@ -17,3 +17,15 @@ for i in *.mkv; do
   ffmpeg -i "$i" -filter_complex "[0:a:0]channelsplit=channel_layout=5.1:channels=FC[FC]" -map "[FC]" "${i%.mkv}_center.wav"
 done
 ```
+
+### Batch number rename files 001.wav, 002.wav etc.
+
+```terminal
+i=1
+ext="wav"
+for f in *.$ext; do
+  new=$(printf "%03d.$ext" "$i")
+  mv -- "$f" "$new"
+  i=$((i+1))
+done
+```
