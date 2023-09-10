@@ -1,6 +1,16 @@
 # FFMPEG Notes and Commandline Usage
 
-### Batch extract center channel audio from 5.1 mkv video
+- Change file name extensions as required, examples using .mkv
+
+### Batch extract audio from video files
+
+```terminal
+for i in *.mkv; do
+  ffmpeg -i "$i" -q:a 0 -map a "${i%.mkv}.wav"
+done
+```
+
+### Batch extract center channel audio from 5.1 video files
 
 ```terminal
 for i in *.mkv; do
