@@ -10,7 +10,7 @@ for i in *.mkv; do
 done
 ```
 
-### Batch extract center channel audio from 5.1 video files
+### Batch extract only center channel audio from 5.1 video files
 
 ```terminal
 for i in *.mkv; do
