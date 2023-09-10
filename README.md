@@ -1,4 +1,4 @@
-## FFMPEG Notes
+## FFMPEG Notes and Terminal Commands
 
 - Change file name extensions as required, examples using .mkv
 
