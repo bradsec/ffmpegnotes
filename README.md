@@ -1,4 +1,4 @@
-# FFMPEG Notes and Commandline Usage
+## FFMPEG Notes
 
 - Change file name extensions as required, examples using .mkv
 
