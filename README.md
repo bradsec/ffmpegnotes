@@ -3,7 +3,7 @@
 - Change file name extensions as required, examples using .mkv
 
 
-### Compile FFMPEG with CUDA support Debian 11 and 12
+## Compile FFMPEG with CUDA support Debian 11 and 12
 ```
 # Note CUDA drivers / toolkit needs to already be installed.
 
@@ -30,29 +30,25 @@ cd ffmpeg
 make -j $(nproc)
 sudo make install
 cd..
+```
 
-# Usage - ffmpeg -y -hwaccel cuda (normal ffmpeg arguments)
+- Run `ffmpeg` command to confirm build configuration with CUDA support
+- Example output of a sucessfully compiled version.
 
-Example output sucessfully compiled
+```terminal
 ffmpeg version N-112061-g654e4b00e2 Copyright (c) 2000-2023 the FFmpeg developers
   built with gcc 12 (Debian 12.2.0-14)
   configuration: --enable-nonfree --enable-gpl --enable-nonfree --enable-libmp3lame --enable-libx264 --enable-libx265 --enable-libfdk-aac --enable-cuvid --enable-nvenc --enable-cuda-nvcc --enable-libnpp --extra-cflags=-I/usr/local/cuda/include --extra-ldflags=-L/usr/local/cuda/lib64
-  libavutil      58. 24.100 / 58. 24.100
-  libavcodec     60. 26.100 / 60. 26.100
-  libavformat    60. 12.100 / 60. 12.100
-  libavdevice    60.  2.101 / 60.  2.101
-  libavfilter     9. 11.100 /  9. 11.100
-  libswscale      7.  3.100 /  7.  3.100
-  libswresample   4. 11.100 /  4. 11.100
-  libpostproc    57.  2.100 / 57.  2.100
-Hyper fast Audio and Video encoder
-usage: ffmpeg [options] [[infile options] -i infile]... {[outfile options] outfile}...
-
-Use -h to get full help or, even better, run 'man ffmpeg'
 ```
 
-### Batch extract audio from video files
+#### Using `ffmpeg` with CUDA hardware acceleration
+```terminal
+ffmpeg -y -hwaccel cuda (normal ffmpeg arguments)
+```
 
+## FFMPEG command line helpers
+
+### Batch extract audio from video files
 ```terminal
 for i in *.mkv; do
   ffmpeg -i "$i" -q:a 0 -map a "${i%.mkv}.wav"
@@ -60,7 +56,6 @@ done
 ```
 
 ### Batch extract only center channel audio from 5.1 video files
-
 ```terminal
 for i in *.mkv; do
   ffmpeg -i "$i" -filter_complex "[0:a:0]channelsplit=channel_layout=5.1:channels=FC[FC]" -map "[FC]" "${i%.mkv}_center.wav"
@@ -68,7 +63,6 @@ done
 ```
 
 ### Batch number rename files 001.wav, 002.wav etc.
-
 ```terminal
 i=1
 ext="wav"
@@ -78,3 +72,20 @@ for f in *.$ext; do
   i=$((i+1))
 done
 ```
+
+### Join Concat Video or Audio Files
+```terminal
+# In directory containing files (change filetype if required .mkv .wav etc)
+# Make a list of files in files.txt
+for f in *.mkv; do echo "file '$f'" >> files.txt; done
+
+# Concat files (change output filename and filetype if required .mkv .wav etc)
+ffmpeg -f concat -safe 0 -i files.txt -c copy output.mkv
+```
+
+### Get duration of audio or video file
+```terminal
+# Using ffprobe, result returned in seconds (set input file name example input.wav).
+ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 input.wav
+```
+
