@@ -75,12 +75,16 @@ done
 
 ### Join Concat Video or Audio Files
 ```terminal
-# In directory containing files (change filetype if required .mkv .wav etc)
-# Make a list of files in files.txt
-for f in *.mkv; do echo "file '$f'" >> files.txt; done
+# Applies to current directory
 
-# Concat files (change output filename and filetype if required .mkv .wav etc)
-ffmpeg -f concat -safe 0 -i files.txt -c copy output.mkv
+# Set file type (ft) to audio or video files you want to join.
+ft="wav"
+
+# Make a list of files in files.txt
+for f in *.$ft; do echo "file '$f'" >> files.txt; done
+
+# Concat join files with ffmpeg
+ffmpeg -f concat -safe 0 -i files.txt -c copy output.$ft
 ```
 
 ### Get duration of audio or video file
